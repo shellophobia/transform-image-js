@@ -56,7 +56,7 @@ var uploadFile = function(options) {
   this.imageID = 0;
   
   // construct the input DOM
-  var toAppend = '<span>Click on the div to upload<p>Or Drag n Drop the file</p></span><input name = "' + this.fileInputSelector + '[]" type = "file" multiple = "true" style = "position:absolute;top:0;left:0;right:0;bottom:0;opacity:0;z-index:100;cursor:pointer;height:100%;width:100%;">';
+  var toAppend = '<span>Click on the div to upload<p>Or Drag n Drop the file</p></span><input name = "' + this.fileInputSelector + '[]" type = "file" ' + (this.allowMultiple ? 'multiple = "true"' : '')  + ' style = "position:absolute;top:0;left:0;right:0;bottom:0;opacity:0;z-index:100;cursor:pointer;height:100%;width:100%;">';
   this.toAppend = options.toAppend || toAppend;
   if (this.appendFileInput) {
     $(this.targetElem).append(this.toAppend).css('position', 'relative');
@@ -239,6 +239,17 @@ var uploadFile = function(options) {
     return blob;
   }
   
+  // removes the upload Area container from dom
+  this.remove = function() {
+    this.stopUpload();
+    if (this.toAppend) {
+      $(this.targetElem).html('');
+    }
+    if (this.enablePreview) {
+      $(this.previewSelector).html('');
+    }
+  }
+  
   // read files from input
   $('body').on('change', '#' + this.fileInputSelector, function(e) {
     if ( !( window.File && window.FileReader && window.FileList && window.Blob ) ) {
@@ -250,7 +261,8 @@ var uploadFile = function(options) {
   
   // delete preview code
   $('body').on('click', '.delete_preview', function(e) {
-    $(this).parent().remove()
+    $(this).parent().remove();
+    self.formDataArray.splice($(this).data('id'), 1);
   });
   
   if (this.isDragNDrop) {
