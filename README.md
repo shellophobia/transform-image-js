@@ -5,7 +5,8 @@ Its a plugin that enables you upload image files to the server with a front-end 
 
 So here's a plugin that comes to the rescue.
 
-I have listed out the events, methods and params for incorporating the plugin at https://gist.github.com/shellophobia/547a13696996eebbcf20b19f1bfffca4. I havent done anything on the styling part, coz i guess most of you would want to do it on your side, since everybody wants a custom thing. So you can go through the IDs of the element that i have created and style it on your own. This repo only contains a simple JS file.
+I have listed out the events, methods and params for incorporating the plugin at https://gist.github.com/shellophobia/547a13696996eebbcf20b19f1bfffca4. 
+I havent done anything on the styling part, coz i guess most of you would want to do it on your side, since everybody wants a custom thing. So you can go through the IDs of the element that i have created and style it on your own. This repo only contains a simple JS file.
 
 So feel free to write any suggestions.
 
