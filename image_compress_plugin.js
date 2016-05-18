@@ -60,7 +60,7 @@ var uploadFile = function(options) {
   this.onLoad = options.onLoad || this.noop;
   this.beforeSubmit = options.beforeSubmit || this.noop;
   this.onSuccess = options.onSuccess || this.noop;
-  this.onError = options.onError || this.noop;
+  this.onFailure = options.onFailure || this.noop;
   this.targetElem = this.selector;
   this.stopFlag = false;
   this.formDataArray = {};
@@ -77,7 +77,7 @@ var uploadFile = function(options) {
   }
   else {
     if (this.fileInputSelector !== "compressFileInput") {
-      this.fileinput = $(this.fileInputSelector);
+      this.fileinput = $('#' + this.fileInputSelector);
     }
     else {
       $(this.targetElem).find('input[type=file]').attr('id', this.fileInputSelector);
@@ -134,21 +134,24 @@ var uploadFile = function(options) {
       image.onload = function() {
         // have to wait till it's loaded
         var resized = self.resizeImg(image); // send it to canvas
-        var file;
+        var resized_blob;
         
         if (self.isBase64) {
           self.formData.append(self.inputFieldName + (self.allowMultiple ? '[]' : ''), resized);
         }
         else {
-          file = self.base64ToBlob(resized);
-          self.formData.append(self.inputFieldName + (self.allowMultiple ? '[]' : ''), file);
+          resized_blob = self.base64ToBlob(resized);
+          if (resized_blob.size > file.size) {
+            resized_blob = file;
+          }
+          self.formData.append(self.inputFieldName + (self.allowMultiple ? '[]' : ''), resized_blob);
         }
         
         if (self.allowAjax) {
           if (self.autoSubmit) {
             self.submitFormData();
           } else {
-            self.formDataArray[self.imageID] = (self.isBase64 ? resized : file);
+            self.formDataArray[self.imageID] = (self.isBase64 ? resized : resized_blob);
             self.imageID++;
           }
         }
@@ -200,7 +203,7 @@ var uploadFile = function(options) {
       type: 'POST',
       processData: false,
       contentType: false
-    }).done(self.onSuccess).fail(self.onError);
+    }).done(function(data) { self.onSuccess(data) }).fail( function() { self.onFailure() });
   }
   
   // starts the upload
