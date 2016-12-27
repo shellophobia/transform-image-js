@@ -1,0 +1,30 @@
+{
+  "name": "image-compressify",
+  "version": "1.0.0",
+  "description": "compress uploaded images on front end",
+  "main": "image-compressify.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shellophobia/UploadCompressImage"
+  },
+  "keywords": [
+    "compress",
+    "image",
+    "image",
+    "compression",
+    "image",
+    "compression",
+    "on",
+    "front",
+    "end",
+    "image",
+    "compresssion",
+    "using",
+    "javascript"
+  ],
+  "author": "Suman Anand",
+  "license": "ISC"
+}
