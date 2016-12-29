@@ -303,7 +303,7 @@ function compressify() {
       }
     }
 
-    this.addListener(el, eventArr, callback) {
+    this.addListener = function(el, eventArr, callback) {
       for (var i=0;i<eventArr.length; i++) {
         el.addEventListener(eventArr[i], callback);
       }
