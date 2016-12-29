@@ -77,7 +77,7 @@ var uploadFile = function(options) {
   self.formData = new FormData();
 
   // construct the input DOM
-  var toAppend = '<span>Click on the div to upload<p>Or Drag n Drop the file</p></span><input type = "file" ' + (this.allowMultiple ? 'multiple = "true"' : '')  + ' style = "position:absolute;top:0;left:0;right:0;bottom:0;opacity:0;z-index:100;cursor:pointer;height:100%;width:100%;">';
+  var toAppend = '<span>Click here to upload<p>Or Drag n Drop the file</p></span><input type = "file" ' + (this.allowMultiple ? 'multiple = "true"' : '')  + ' style = "position:absolute;top:0;left:0;right:0;bottom:0;opacity:0;z-index:100;cursor:pointer;height:100%;width:100%;">';
   this.toAppend = options.toAppend || toAppend;
   if (this.appendFileInput) {
     this.targetElem.insertAdjacentHTML('beforeend', this.toAppend);
