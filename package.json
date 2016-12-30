@@ -1,6 +1,6 @@
 {
   "name": "image-compressify",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "compress uploaded images on front end",
   "main": "image-compressify.js",
   "scripts": {
