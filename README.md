@@ -5,7 +5,9 @@ Its a plugin that enables you upload image files to the server with a front-end 
 
 So here's a plugin that comes to the rescue.
 
-I have listed out the events, methods and params for incorporating the plugin at my [gist].
+I have listed out the events, methods and params for incorporating the plugin at my gist.
+Gist for jquery plugin - [jquerygist]
+Gist for npm module - [npmgist]
 
 The logic behind compression is that the larger size images have ample amount of resolution to them, but most of the time that kind of
 resolution is not needed. So this plugin is basically resizing the higher resolution image to the specified dimensions that you will
@@ -19,4 +21,5 @@ I haven't done anything on the styling part, because I guess most of you would w
 
 So feel free to write any suggestions.
 
-[gist]: <https://gist.github.com/shellophobia/547a13696996eebbcf20b19f1bfffca4>
+[jquerygist]: <https://gist.github.com/shellophobia/547a13696996eebbcf20b19f1bfffca4>
+[npmgist]: <https://gist.github.com/shellophobia/7480afeda989bdd7fa93af6147ddd14d>
