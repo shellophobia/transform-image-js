@@ -1,4 +1,4 @@
-# resize-image-js
+# transform-image-js
 
 ### Upload files with resizing to a specified dimension using javascript
 
