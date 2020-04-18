@@ -1,1 +1,1 @@
-export { default as TransformImage } from "./src";
+module.exports = require('./dist');
