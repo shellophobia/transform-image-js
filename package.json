@@ -6,6 +6,14 @@
   "scripts": {
     "build": "gulp build"
   },
+  "files": [
+    "dist",
+    "lib",
+    "src",
+    "index.js",
+    "webpack-gen-config.js",
+    "gulpfile.js"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/shellophobia/transform-image-js.git"
@@ -23,7 +31,9 @@
     "image",
     "compresssion",
     "using",
-    "javascript"
+    "javascript",
+    "resize",
+    "transform"
   ],
   "author": "Suman Anand",
   "license": "MIT",
