@@ -1,8 +1,8 @@
 {
-  "name": "image-compressify",
+  "name": "transform-image-js",
   "version": "2.0.4",
-  "description": "compress uploaded images on front end",
-  "main": "image-compressify.js",
+  "description": "resize uploaded images on front end",
+  "main": "dist/index.js",
   "scripts": {
     "build": "gulp build"
   },
