@@ -50,9 +50,6 @@
   "bugs": {
     "url": "https://github.com/shellophobia/transform-image-js/issues"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "jsdelivr": "dist/transform-image-js.min.js",
   "unpkg": "dist/transform-image-js.min.js"
 }
