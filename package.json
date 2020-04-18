@@ -4,11 +4,11 @@
   "description": "compress uploaded images on front end",
   "main": "image-compressify.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/shellophobia/UploadCompressImage"
+    "url": "https://github.com/shellophobia/transform-image-js.git"
   },
   "keywords": [
     "compress",
@@ -26,5 +26,23 @@
     "javascript"
   ],
   "author": "Suman Anand",
-  "license": "ISC"
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-transform-spread": "^7.8.3",
+    "@babel/preset-env": "^7.9.5",
+    "babel-loader": "^8.1.0",
+    "babel-polyfill": "^6.26.0",
+    "gulp": "^4.0.2",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "bugs": {
+    "url": "https://github.com/shellophobia/transform-image-js/issues"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "jsdelivr": "dist/transform-image-js.min.js",
+  "unpkg": "dist/transform-image-js.min.js"
 }
