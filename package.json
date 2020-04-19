@@ -8,11 +8,7 @@
   },
   "files": [
     "dist",
-    "lib",
-    "src",
-    "index.js",
-    "webpack-gen-config.js",
-    "gulpfile.js"
+    "lib"
   ],
   "repository": {
     "type": "git",
