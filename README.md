@@ -156,6 +156,36 @@ Promise that resolves to the output object
 | resizedHeight  | int  | Resized image height  |
 | resizedWidth   | int  | Resized image width   |
 
+## JQuery Plugin
+[image_compress_plugin](https://cdn.jsdelivr.net/npm/@shellophobia/transform-image-js@1.0.3/jquery_plugin/image_compress_plugin.js) allows to add a file upload an compress functionality in your application.
+
+### Usage
+```html
+<p>This is a demo for the resize image jquery plugin. Feel free to go through the source code 
+<a href="https://github.com/shellophobia/UploadCompressImage/blob/master/jquery_plugin/image_compress_plugin.js">here</a></p>
+<div id="fileinput">
+  <button class="btn-upload"><i class="fas fa-cloud-upload-alt"></i> Click Here to Upload</button>
+  <p class="drag-p">Or Drag N Drop the file</p>
+  <input type="file" multiple="true">
+</div>
+<div id="preview"></div>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@shellophobia/transform-image-js@1.0.3/jquery_plugin/image_compress_plugin.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#fileinput").uploadFile({
+    enablePreview: true,
+    appendFileInput: false,
+    autoSubmit: false,
+    previewSelector: "#preview"
+  });
+});
+</script>
+```
+
+[Configuration gist for jquery plugin](https://gist.github.com/shellophobia/547a13696996eebbcf20b19f1bfffca4)
+
 ## License
 
 [MIT](http://opensource.org/licenses/MIT)
