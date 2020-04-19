@@ -119,7 +119,7 @@ var validateFileSize = function validateFileSize(imageSize, options) {
 var base64ToBlob = function base64ToBlob(base64, fileType) {
   var sliceSize = 512; // uses 512 as packet size for efficient conversion
 
-  var regEx = new RegExp("^data:image/" + fileType + ";base64,");
+  var regEx = new RegExp("^data:" + fileType + ";base64,");
   base64 = base64.replace(regEx, "");
   var byteCharacters = atob(base64);
   var byteArrays = [];
@@ -137,7 +137,7 @@ var base64ToBlob = function base64ToBlob(base64, fileType) {
   }
 
   var blob = new Blob(byteArrays, {
-    type: "image/" + fileType
+    type: fileType
   });
   return blob;
 };

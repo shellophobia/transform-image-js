@@ -119,7 +119,7 @@ var validateFileSize = function validateFileSize(imageSize, options) {
 var base64ToBlob = function base64ToBlob(base64, fileType) {
   var sliceSize = 512; // uses 512 as packet size for efficient conversion
 
-  var regEx = new RegExp("^data:image/" + fileType + ";base64,");
+  var regEx = new RegExp("^data:" + fileType + ";base64,");
   base64 = base64.replace(regEx, "");
   var byteCharacters = atob(base64);
   var byteArrays = [];
@@ -137,7 +137,7 @@ var base64ToBlob = function base64ToBlob(base64, fileType) {
   }
 
   var blob = new Blob(byteArrays, {
-    type: "image/" + fileType
+    type: fileType
   });
   return blob;
 };
@@ -152,8 +152,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resizeImageFile", function() { return resizeImageFile; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resizeImageCanvas", function() { return resizeImageCanvas; });
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
-
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -161,7 +159,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
  // Returns a promise
 
 var resizeImageFile = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(file, options) {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(file, options, resolve, _reject) {
     var reader;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
@@ -172,7 +170,7 @@ var resizeImageFile = /*#__PURE__*/function () {
               break;
             }
 
-            throw "File is null or undefined";
+            return _context.abrupt("return");
 
           case 2:
             if (Object(_utils__WEBPACK_IMPORTED_MODULE_0__["validateFileType"])(file.type, options)) {
@@ -201,12 +199,13 @@ var resizeImageFile = /*#__PURE__*/function () {
 
               image.onload = function () {
                 // have to wait till it's loaded
-                var resized = resizeImageCanvas(image, file.type, options); // send it to canvas
+                var resizedImage = resizeImageCanvas(image, file.type, options); // send it to canvas
 
                 if (options.base64OutputType) {
-                  return resized;
+                  resolve(resizedImage);
                 } else if (options.blobOutputType) {
-                  return Object(_utils__WEBPACK_IMPORTED_MODULE_0__["base64ToBlob"])(resized, file.type);
+                  resizedImage.output = Object(_utils__WEBPACK_IMPORTED_MODULE_0__["base64ToBlob"])(resizedImage.output, file.type);
+                  resolve(resizedImage);
                 }
               };
             };
@@ -219,7 +218,7 @@ var resizeImageFile = /*#__PURE__*/function () {
     }, _callee);
   }));
 
-  return function resizeImageFile(_x, _x2) {
+  return function resizeImageFile(_x, _x2, _x3, _x4) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -230,13 +229,13 @@ var resizeImageCanvas = function resizeImageCanvas(img, fileType, options) {
 
   if (width > height) {
     if (width > options.maxWidth) {
-      height = (_readOnlyError("height"), Math.round(height *= (_readOnlyError("height"), options.maxWidth / width)));
-      width = (_readOnlyError("width"), options.maxWidth);
+      height = Math.round(height *= options.maxWidth / width);
+      width = options.maxWidth;
     }
   } else {
     if (height > options.maxHeight) {
-      width = (_readOnlyError("width"), Math.round(width *= (_readOnlyError("width"), options.maxHeight / height)));
-      height = (_readOnlyError("height"), options.maxHeight);
+      width = Math.round(width *= options.maxHeight / height);
+      height = options.maxHeight;
     }
   } // resize the canvas and draw the image data into it
 
@@ -245,7 +244,15 @@ var resizeImageCanvas = function resizeImageCanvas(img, fileType, options) {
   canvas.height = height;
   var ctx = canvas.getContext("2d");
   ctx.drawImage(img, 0, 0, width, height);
-  return canvas.toDataURL("image/" + fileType, options.quality);
+  return {
+    output: canvas.toDataURL(fileType, options.quality),
+    metadata: {
+      originalHeight: img.height,
+      originalWidth: img.width,
+      resizedHeight: height,
+      resizedWidth: width
+    }
+  };
 };
 
 /***/ })

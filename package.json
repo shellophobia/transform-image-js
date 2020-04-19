@@ -39,6 +39,7 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-transform-spread": "^7.8.3",
     "@babel/preset-env": "^7.9.5",
     "babel-loader": "^8.1.0",
@@ -50,6 +51,6 @@
   "bugs": {
     "url": "https://github.com/shellophobia/transform-image-js/issues"
   },
-  "jsdelivr": "dist/transform-image-js.min.js",
-  "unpkg": "dist/transform-image-js.min.js"
+  "jsdelivr": "lib/transform-image-js.min.js",
+  "unpkg": "lib/transform-image-js.min.js"
 }

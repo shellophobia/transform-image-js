@@ -12,9 +12,11 @@ function generateConfig(name) {
     umdNamedDefine: true,
   };
   if (!transformAllFiles) {
-    output.path = path.resolve(__dirname, 'lib/'),
+    output.path = path.resolve(__dirname, 'lib/');
     output.sourceMapFilename = name + '.map';
-    output.library = 'transform-image-js',
+    output.library = 'transformImageJS';
+    // output.globalObject = 'this';
+    output.libraryTarget = 'window';
   }
   var config = {
     entry: transformAllFiles ? getEntries('./src/**/*.js') : './index.js',

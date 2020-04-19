@@ -1,25 +1,161 @@
-# UploadCompressImage
+# transform-image-js
 
-### Upload files with resizing to a specified dimension using javascript
+[![Build Status](https://img.shields.io/travis/shellophobia/transform-image-js.svg)](https://travis-ci.org/github/shellophobia/transform-image-js)
+[![Version](https://img.shields.io/npm/v/@shellophobia/transform-image-js.svg)](https://www.npmjs.com/package/@shellophobia/transform-image-js)
+[![License](https://img.shields.io/npm/l/@shellophobia/transform-image-js.svg)](https://www.npmjs.com/package/@shellophobia/transform-image-js)
+[![minified size](https://img.shields.io/bundlephobia/min/@shellophobia/transform-image-js.svg)](https://www.npmjs.com/package/@shellophobia/transform-image-js)
 
-Demo [demo]
+> [transform-image-js](https://github.com/shellophobia/transform-image-js) is a library that resizes the image within defined constraints and also allows to adjust the quality of image. One of the use cases is when you want to perform a size optimization on the image before uploading.
 
-A plugin that enables you upload image files to the server with a front-end side compression. So basically the image that you upload gets redrawn on the canvas with new dimension that you specify in the options and a compressed base64 encoded string is obtained from it. Now most of us these days have a phone with a fancy camera, that clicks the images of sizes of around 8-13 MB. So uploading that kind of size onto the server is totally not acceptable. So you wish to either compress on front end side or the server side. Android has some libraries that allows you to compress the files before sending onto the server, but on the other hand there is no such solid lead available on the browser side.
+## Getting started
 
-So here's a plugin that comes to the rescue.
+### Installing
 
-I have listed out the events, methods and params for incorporating the plugin at my gist.
-Gist for jquery plugin - [jquerygist]
-Gist for npm module - [npmgist]
+Using npm:
 
-The logic behind compression is that the larger size images have ample amount of resolution to them, but most of the time that kind of resolution is not needed. So this plugin is basically resizing the higher resolution image to the specified dimensions that you will provide or it is going to use the default dimensions as specified inside the plugin. To use the compression algorithm on the front end especially with the current browser specs is quite a heavy task and it will slow down your page with high CPU usage, so resizing on the other hand helps.
+```bash
+npm i @shellophobia/transform-image-js
+```
 
-This repository contains both jquery plugin as well as a npm module code. You can use it as per your convenience.
+Using yarn:
 
-I haven't done anything on the styling part, because I guess most of you would want to do it on your side, since everybody wants a custom thing. So you can go through the IDs of the element that I have created and style it on your own. This repo only contains a simple JS file.
+```bash
+yarn add @shellophobia/transform-image-js
+```
 
-So feel free to write any suggestions.
+Using jsDelivr CDN:
 
-[jquerygist]: https://gist.github.com/shellophobia/547a13696996eebbcf20b19f1bfffca4
-[npmgist]: https://gist.github.com/shellophobia/7480afeda989bdd7fa93af6147ddd14d
-[demo]: https://shellophobia.github.io/uploadresizeimage.html
+```html
+<script src="https://cdn.jsdelivr.net/npm/@shellophobia/transform-image-js/lib/transform-image-js.min.js"></script>
+```
+
+Using unpkg CDN:
+
+```html
+<script src="https://unpkg.com/@shellophobia/transform-image-js/lib/transform-image-js.min.js"></script>
+```
+
+### Usage
+
+#### Import
+
+in CommonJS:
+```js
+const transformImage = require("@shellophobia/transform-image-js")
+```
+
+in ES6:
+
+```js
+import transformImage from '@shellophobia/transform-image-js';
+```
+
+#### Resize image to max 500x500 with quality as 0.9:
+
+##### Vanilla JS and HTML
+```html
+<input id="demo" type="file" onchange="handleUpload">
+```
+```js
+function handleUpload(e){
+  const file = e.target.files[0];
+  // The library will add a property `transformImageJS` on window once you import it
+  const transformImage = new transformImageJS.TransformImage({maxHeight: 500, maxWidth:500, quality:0.9});
+  transformImage.resizeImage(file).then(res=>{
+    //The response returns an object that has the output blob in output attribute and has metadata for image sizes before and after transformation
+    console.log(res);
+  }).catch(err => {
+    // handle error
+  });
+}
+
+// using async function
+async function handleUpload(e) {
+  const file = e.target.files[0];
+  const transformImage = new transformImageJS.TransformImage({maxHeight: 500, maxWidth:500, quality:0.9});
+  try {
+    const res = await transformImage.resizeImage(file);
+    console.log(res);
+  } catch(e) {
+    // handle error
+  }
+}
+```
+
+##### React JSX
+```js
+import React from "react";
+import transformImage from "@shellophobia/transform-image-js";
+
+const handleUpload = async (e) => {
+  const file = e.target.files[0];
+  console.log(file);
+  const transformImage = new transformImage({maxHeight: 500, maxWidth:500, quality:0.9});
+  try {
+    const res = await transformImage.resizeImage(file);
+    console.log(res);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export default function App() {
+  return (
+    <div className="App">
+      <input type="file" onChange={handleUpload} />
+    </div>
+  );
+}
+```
+
+## API
+
+### Initialization options
+
+#### Description
+Following options can be passed during initialization of transformImage that returns an object on which methods can be called
+
+#### `transformImage(options)`
+
+| Name             | Type     | Description                                                                                                | Default                |
+|------------------|----------|------------------------------------------------------------------------------------------------------------|------------------------|
+| sizeLimit        | int      | Byte size limit of the output                                                                              | 16777216 // 16MB       |
+| maxWidth         | int      | Max width of the output                                                                                    | 500                    |
+| maxHeight        | int      | Max height of the output                                                                                   | 500                    |
+| quality          | float    | A Number between 0 and 1 indicating the image quality to use for  image formats that use lossy compression | 0.92                   |
+| base64OutputType | bool     | Return base64 output string in response                                                                    | false                  |
+| blobOutputType   | bool     | Return blob output in response                                                                             | true                   |
+| allowedFileTypes | []string | Array of allowed file types for uploaded file                                                              | ["jpg", "png", "jpeg"] |
+
+
+### Methods
+
+### `resizeImage(imageFile) => {Promise}`
+
+#### Description:
+Resize an image file with the configuration provided in the initialization options
+
+#### Parameters:
+| Name          | Type | Description              |
+|---------------|------|--------------------------|
+| imageFile     | file | The image file to resize |
+
+#### Returns:
+Promise that resolves to the output object
+
+| Name     | Type               | Description                                                        |
+|----------|--------------------|--------------------------------------------------------------------|
+| output   | blob/base64 string | Blob or base64 string based on configuration                       |
+| metadata | object             | Metadata about initial image dimensions and final image dimensions |
+
+##### Metadata
+| Name           | Type | Description           |
+|----------------|------|-----------------------|
+| originalHeight | int  | Original image height |
+| originalWidth  | int  | Original image width  |
+| resizedHeight  | int  | Resized image height  |
+| resizedWidth   | int  | Resized image width   |
+
+## License
+
+[MIT](http://opensource.org/licenses/MIT)
