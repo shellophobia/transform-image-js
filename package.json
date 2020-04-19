@@ -1,6 +1,6 @@
 {
   "name": "@shellophobia/transform-image-js",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "resize uploaded images on front end",
   "main": "dist/index.js",
   "scripts": {
