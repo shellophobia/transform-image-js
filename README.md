@@ -157,7 +157,7 @@ Promise that resolves to the output object
 | resizedWidth   | int  | Resized image width   |
 
 ## JQuery Plugin
-[image_compress_plugin](https://cdn.jsdelivr.net/npm/@shellophobia/transform-image-js@1.0.3/jquery_plugin/image_compress_plugin.js) allows to add a file upload an compress functionality in your application.
+[image_compress_plugin](https://cdn.jsdelivr.net/npm/@shellophobia/transform-image-js@1.0.3/jquery_plugin/image_compress_plugin.js) is a jquery plugin that allows to add a file upload and compress functionality.
 
 ### Usage
 ```html
