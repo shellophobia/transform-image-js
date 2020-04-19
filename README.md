@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/npm/l/@shellophobia/transform-image-js.svg)](https://www.npmjs.com/package/@shellophobia/transform-image-js)
 [![minified size](https://img.shields.io/bundlephobia/min/@shellophobia/transform-image-js.svg)](https://www.npmjs.com/package/@shellophobia/transform-image-js)
 
-> [transform-image-js](https://github.com/shellophobia/transform-image-js) is a library that resizes the image within defined constraints and also allows to adjust the quality of image. One of the use cases is when you want to perform a size optimization on the image before uploading.
+> [transform-image-js](https://github.com/shellophobia/transform-image-js) is a library to perform transformations on an image file e.g. resize an image within defined constraints and also allows to adjust the quality of image. One of the use cases is when you want to perform a size optimization on the image before uploading.
 
 ## Getting started
 
