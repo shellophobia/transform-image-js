@@ -19,7 +19,7 @@ export const validateFileSize = (imageSize, options) => {
 
 export const base64ToBlob = (base64, fileType) => {
   const sliceSize = 512; // uses 512 as packet size for efficient conversion
-  const regEx = new RegExp("^data:image/" + fileType + ";base64,");
+  const regEx = new RegExp("^data:" + fileType + ";base64,");
   base64 = base64.replace(regEx, "");
   const byteCharacters = atob(base64);
   const byteArrays = [];
@@ -37,6 +37,6 @@ export const base64ToBlob = (base64, fileType) => {
     byteArrays.push(byteArray);
   }
 
-  const blob = new Blob(byteArrays, { type: "image/" + fileType });
+  const blob = new Blob(byteArrays, { type: fileType });
   return blob;
 };

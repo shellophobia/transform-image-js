@@ -30,11 +30,13 @@ class TransformImage {
   @params
   imageFile - The image file object obtained after user has uploaded the file
   */
-  resizeImage(imageFile) {
-    resizeImageFile(imageFile, {
-      ...this.options,
+  resizeImage = (imageFile) => {
+    return new Promise((resolve, reject) => {
+      resizeImageFile(imageFile, this.options, resolve, reject).catch((e) => {
+        reject(e);
+      });
     });
-  }
+  };
 }
 
 export default TransformImage;

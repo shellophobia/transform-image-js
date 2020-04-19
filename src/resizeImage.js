@@ -1,9 +1,9 @@
 import { validateFileType, validateFileSize, base64ToBlob } from "./utils";
 
 // Returns a promise
-export const resizeImageFile = async (file, options) => {
+export const resizeImageFile = async (file, options, resolve, _reject) => {
   // Perform a null check on file
-  if (!file) throw "File is null or undefined";
+  if (!file) return;
 
   // Validate the file type
   if (!validateFileType(file.type, options)) {
@@ -29,11 +29,12 @@ export const resizeImageFile = async (file, options) => {
     image.src = blobURL;
     image.onload = function () {
       // have to wait till it's loaded
-      const resized = resizeImageCanvas(image, file.type, options); // send it to canvas
+      const resizedImage = resizeImageCanvas(image, file.type, options); // send it to canvas
       if (options.base64OutputType) {
-        return resized;
+        resolve(resizedImage);
       } else if (options.blobOutputType) {
-        return base64ToBlob(resized, file.type);
+        resizedImage.output = base64ToBlob(resizedImage.output, file.type);
+        resolve(resizedImage);
       }
     };
   };
@@ -41,9 +42,8 @@ export const resizeImageFile = async (file, options) => {
 
 export const resizeImageCanvas = (img, fileType, options) => {
   const canvas = document.createElement("canvas");
-
-  const width = img.width;
-  const height = img.height;
+  let width = img.width;
+  let height = img.height;
 
   // calculate the width and height, constraining the proportions
   if (width > height) {
@@ -64,5 +64,13 @@ export const resizeImageCanvas = (img, fileType, options) => {
   const ctx = canvas.getContext("2d");
   ctx.drawImage(img, 0, 0, width, height);
 
-  return canvas.toDataURL("image/" + fileType, options.quality);
+  return {
+    output: canvas.toDataURL(fileType, options.quality),
+    metadata: {
+      originalHeight: img.height,
+      originalWidth: img.width,
+      resizedHeight: height,
+      resizedWidth: width,
+    },
+  };
 };
