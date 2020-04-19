@@ -8,7 +8,8 @@
   },
   "files": [
     "dist",
-    "lib"
+    "lib",
+    "jquery_plugin"
   ],
   "repository": {
     "type": "git",
