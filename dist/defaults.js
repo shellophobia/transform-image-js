@@ -106,7 +106,7 @@ __webpack_require__.r(__webpack_exports__);
   // 16MB
   maxWidth: 500,
   maxHeight: 500,
-  quality: 0.5,
+  quality: 0.92,
   base64OutputType: false,
   blobOutputType: true,
   allowedFileTypes: ["jpg", "png", "jpeg"]
