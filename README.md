@@ -163,7 +163,7 @@ Promise that resolves to the output object
 
 #### Importing
 ```html
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@shellophobia/transform-image-js@1.0.3/jquery_plugin/image_compress_plugin.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@shellophobia/transform-image-js/jquery_plugin/image_compress_plugin.js"></script>
 ```
 
 #### Example
@@ -178,7 +178,7 @@ Promise that resolves to the output object
 <div id="preview"></div>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@shellophobia/transform-image-js@1.0.3/jquery_plugin/image_compress_plugin.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@shellophobia/transform-image-js/jquery_plugin/image_compress_plugin.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
   $("#fileinput").uploadFile({
