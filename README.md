@@ -160,6 +160,13 @@ Promise that resolves to the output object
 [image_compress_plugin](https://cdn.jsdelivr.net/npm/@shellophobia/transform-image-js@1.0.3/jquery_plugin/image_compress_plugin.js) is a jquery plugin that allows to add a file upload and compress functionality.
 
 ### Usage
+
+#### Importing
+```html
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@shellophobia/transform-image-js@1.0.3/jquery_plugin/image_compress_plugin.js"></script>
+```
+
+#### Example
 ```html
 <p>This is a demo for the resize image jquery plugin. Feel free to go through the source code 
 <a href="https://github.com/shellophobia/UploadCompressImage/blob/master/jquery_plugin/image_compress_plugin.js">here</a></p>
