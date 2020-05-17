@@ -126,7 +126,7 @@ Following options can be passed during initialization of transformImage that ret
 
 ### Methods
 
-### `resizeImage(imageFile, options, fileName) => {Promise}`
+#### `resizeImage(imageFile, options, fileName) => {Promise}`
 
 #### Description:
 Resize an image file
