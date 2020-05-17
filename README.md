@@ -119,7 +119,7 @@ Following options can be passed during initialization of transformImage that ret
 
 | Name             | Type     | Description                                                          | Default                |
 |------------------|----------|----------------------------------------------------------------------|------------------------|
-| sizeLimit        | int      | the byte size limit for the input file/blob                          | 16*1024*1024 = 16MB    |
+| sizeLimit        | int      | the byte size limit for the input file/blob                          | 16777216 bytes = 16MB    |
 | outputType       | enum     | defines the output object format. Allowed values :- blob/base64/file | blob                   |
 | allowedFileTypes | []string | allowed types for the input file/blob e.g. PNG, JPEG, JPG            | ["jpg", "png", "jpeg"] |
 
