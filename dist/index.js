@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -100,9 +100,69 @@ return /******/ (function(modules) { // webpackBootstrap
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OUTPUT_TYPE", function() { return OUTPUT_TYPE; });
+var OUTPUT_TYPE = {
+  BLOB: "blob",
+  BASE64: "base64",
+  FILE: "file"
+};
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateAndGetBlob", function() { return validateAndGetBlob; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateFileType", function() { return validateFileType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fileToBlob", function() { return fileToBlob; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateFileSize", function() { return validateFileSize; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "base64ToBlob", function() { return base64ToBlob; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "base64ToFile", function() { return base64ToFile; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateOutputType", function() { return validateOutputType; });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+var validateAndGetBlob = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(image, options) {
+    var imgBlob;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            imgBlob = image;
+
+            if (!(image instanceof File)) {
+              _context.next = 5;
+              break;
+            }
+
+            _context.next = 4;
+            return fileToBlob(image);
+
+          case 4:
+            imgBlob = _context.sent;
+
+          case 5:
+            validateFileSize(imgBlob.size, options);
+            validateFileType(imgBlob.type, options);
+            return _context.abrupt("return", imgBlob);
+
+          case 8:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function validateAndGetBlob(_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
 var validateFileType = function validateFileType(fileType, options) {
   var accepted = false;
   options.allowedFileTypes.forEach(function (allowedFileType) {
@@ -111,9 +171,44 @@ var validateFileType = function validateFileType(fileType, options) {
   });
   return accepted;
 };
+var fileToBlob = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(file) {
+    var getBlob;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            getBlob = function getBlob() {
+              return new Promise(function (resolve, _reject) {
+                var fileReader = new FileReader();
+
+                fileReader.onload = function (event) {
+                  resolve(new Blob([event.target.result], {
+                    type: file.type
+                  }));
+                };
+
+                fileReader.readAsArrayBuffer(file);
+              });
+            };
+
+            return _context2.abrupt("return", getBlob());
+
+          case 2:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function fileToBlob(_x3) {
+    return _ref2.apply(this, arguments);
+  };
+}();
 var validateFileSize = function validateFileSize(imageSize, options) {
   if (imageSize > options.sizeLimit) {
-    throw "Please upload an image of size less than " + options.sizeLimit / (1024 * 1024) + "MB";
+    throw new Error("Please upload an image of size less than ".concat(options.sizeLimit / (1024 * 1024), "MB"));
   }
 };
 var base64ToBlob = function base64ToBlob(base64, fileType) {
@@ -141,9 +236,20 @@ var base64ToBlob = function base64ToBlob(base64, fileType) {
   });
   return blob;
 };
+var base64ToFile = function base64ToFile(base64, fileType, fileName) {
+  var imgBlob = base64ToBlob(base64, fileType);
+  return new File([imgBlob], fileName, {
+    type: fileType
+  });
+};
+var validateOutputType = function validateOutputType(type) {
+  if (!Object.values(_constants__WEBPACK_IMPORTED_MODULE_0__["OUTPUT_TYPE"]).includes(type)) {
+    throw new Error("invalid output type ".concat(type));
+  }
+};
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -153,80 +259,65 @@ __webpack_require__.r(__webpack_exports__);
   // 16MB
   maxWidth: 500,
   maxHeight: 500,
-  quality: 0.92,
-  base64OutputType: false,
-  blobOutputType: true,
+  quality: 0.9,
+  outputType: "blob",
   allowedFileTypes: ["jpg", "png", "jpeg"]
 });
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resizeImageFile", function() { return resizeImageFile; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resizeImageFn", function() { return resizeImageFn; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resizeImageCanvas", function() { return resizeImageCanvas; });
-/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+
  // Returns a promise
 
-var resizeImageFile = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(file, options, resolve, _reject) {
-    var reader;
+var resizeImageFn = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(imgBlob, fileName, options, resolve, _reject) {
+    var blobURL, image;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            if (file) {
-              _context.next = 2;
-              break;
-            }
+            window.URL = window.URL || window.webkitURL;
+            blobURL = window.URL.createObjectURL(imgBlob); // and get it's URL
+            // helper Image object
 
-            return _context.abrupt("return");
+            image = new Image();
+            image.src = blobURL;
 
-          case 2:
-            if (Object(_utils__WEBPACK_IMPORTED_MODULE_0__["validateFileType"])(file.type, options)) {
-              _context.next = 4;
-              break;
-            }
+            image.onload = function () {
+              // have to wait till it's loaded
+              window.URL.revokeObjectURL(blobURL);
+              var resizedImage = resizeImageCanvas(image, imgBlob.type, options); // send it to canvas
 
-            throw "File " + file.name + " is not a supported image.";
-
-          case 4:
-            // read the files
-            reader = new FileReader();
-            reader.readAsArrayBuffer(file);
-
-            reader.onload = function (event) {
-              var blob = new Blob([event.target.result]); // create blob...
-
-              var imageSize = blob.size;
-              Object(_utils__WEBPACK_IMPORTED_MODULE_0__["validateFileSize"])(imageSize, options);
-              window.URL = window.URL || window.webkitURL;
-              var blobURL = window.URL.createObjectURL(blob); // and get it's URL
-              // helper Image object
-
-              var image = new Image();
-              image.src = blobURL;
-
-              image.onload = function () {
-                // have to wait till it's loaded
-                var resizedImage = resizeImageCanvas(image, file.type, options); // send it to canvas
-
-                if (options.base64OutputType) {
+              switch (options.outputType) {
+                case _constants__WEBPACK_IMPORTED_MODULE_1__["OUTPUT_TYPE"].BASE64:
                   resolve(resizedImage);
-                } else if (options.blobOutputType) {
-                  resizedImage.output = Object(_utils__WEBPACK_IMPORTED_MODULE_0__["base64ToBlob"])(resizedImage.output, file.type);
+                  break;
+
+                case _constants__WEBPACK_IMPORTED_MODULE_1__["OUTPUT_TYPE"].BLOB:
+                  resizedImage.output = Object(_utils__WEBPACK_IMPORTED_MODULE_0__["base64ToBlob"])(resizedImage.output, imgBlob.type);
                   resolve(resizedImage);
-                }
-              };
+                  break;
+
+                default:
+                  resizedImage.output = Object(_utils__WEBPACK_IMPORTED_MODULE_0__["base64ToFile"])(resizedImage.output, imgBlob.type, fileName);
+                  resolve(resizedImage);
+                  break;
+              }
             };
 
-          case 7:
+          case 5:
           case "end":
             return _context.stop();
         }
@@ -234,7 +325,7 @@ var resizeImageFile = /*#__PURE__*/function () {
     }, _callee);
   }));
 
-  return function resizeImageFile(_x, _x2, _x3, _x4) {
+  return function resizeImageFn(_x, _x2, _x3, _x4, _x5) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -272,13 +363,22 @@ var resizeImageCanvas = function resizeImageCanvas(img, fileType, options) {
 };
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _defaults__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _resizeImage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _defaults__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _resizeImage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -286,46 +386,86 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var TransformImage =
 /*
   Options - An object with following properties
-  sizeLimit : the byte size limit for the output file
-  maxWidth: the max width for the file in px
-  maxHeight: the max height for the file in px
-  quality: a value between 0 and 1 to denote the quality of the output image
-  base64OutputType: boolean to return a base64 string as the output
-  blobOutputType: boolean to return a blob as output
-  allowedFileTypes: allowed types for the image file e.g. PNG, JPEG, JPG
+  sizeLimit : the byte size limit for the input file/blob
+  outputType: defines the output object format. Allowed values :- blob/base64/file
+  allowedFileTypes: allowed types for the input file/blob e.g. PNG, JPEG, JPG
 */
-function TransformImage(options) {
+function TransformImage() {
   var _this = this;
+
+  var _options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   _classCallCheck(this, TransformImage);
 
-  _defineProperty(this, "resizeImage", function (imageFile) {
-    return new Promise(function (resolve, reject) {
-      Object(_resizeImage__WEBPACK_IMPORTED_MODULE_1__["resizeImageFile"])(imageFile, _this.options, resolve, reject)["catch"](function (e) {
-        reject(e);
-      });
-    });
-  });
+  _defineProperty(this, "resizeImage", /*#__PURE__*/function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(image) {
+      var options,
+          fileName,
+          imgBlob,
+          _args = arguments;
+      return regeneratorRuntime.wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              options = _args.length > 1 && _args[1] !== undefined ? _args[1] : {};
+              fileName = _args.length > 2 && _args[2] !== undefined ? _args[2] : "";
 
-  options.sizeLimit = options.sizeLimit || _defaults__WEBPACK_IMPORTED_MODULE_0__["default"].sizeLimit;
-  options.maxWidth = options.maxWidth || _defaults__WEBPACK_IMPORTED_MODULE_0__["default"].maxWidth;
-  options.maxHeight = options.maxHeight || _defaults__WEBPACK_IMPORTED_MODULE_0__["default"].maxHeight;
-  options.quality = options.quality || _defaults__WEBPACK_IMPORTED_MODULE_0__["default"].quality; // Quality - A value between 0 and 1 to denote the quality of the image in the output
+              if (image) {
+                _context.next = 4;
+                break;
+              }
 
-  options.base64OutputType = options.base64OutputType || _defaults__WEBPACK_IMPORTED_MODULE_0__["default"].base64OutputType; // return Base64 string
+              return _context.abrupt("return");
 
-  options.blobOutputType = options.blobOutputType || _defaults__WEBPACK_IMPORTED_MODULE_0__["default"].blobOutputType; // return Blob // NOTE: you can only choose one of the base64 or blob options
+            case 4:
+              options.maxWidth = options.maxWidth || _defaults__WEBPACK_IMPORTED_MODULE_0__["default"].maxWidth;
+              options.maxHeight = options.maxHeight || _defaults__WEBPACK_IMPORTED_MODULE_0__["default"].maxHeight;
+              options.quality = options.quality || _defaults__WEBPACK_IMPORTED_MODULE_0__["default"].quality; // Quality - A value between 0 and 1 to denote the quality of the image in the output
 
-  options.allowedFileTypes = options.allowedFileTypes || _defaults__WEBPACK_IMPORTED_MODULE_0__["default"].allowedFileTypes; // An array of allowed file types
+              _context.next = 9;
+              return Object(_utils__WEBPACK_IMPORTED_MODULE_2__["validateAndGetBlob"])(image, _this.options);
 
-  this.options = options;
+            case 9:
+              imgBlob = _context.sent;
+              return _context.abrupt("return", new Promise(function (resolve, reject) {
+                Object(_resizeImage__WEBPACK_IMPORTED_MODULE_1__["resizeImageFn"])(imgBlob, fileName, _objectSpread({}, _this.options, {
+                  options: options
+                }), resolve, reject);
+              }));
+
+            case 11:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }));
+
+    return function (_x) {
+      return _ref.apply(this, arguments);
+    };
+  }());
+
+  _options.sizeLimit = _options.sizeLimit || _defaults__WEBPACK_IMPORTED_MODULE_0__["default"].sizeLimit;
+  _options.outputType = _options.outputType || _defaults__WEBPACK_IMPORTED_MODULE_0__["default"].outputType; // output object format BLOB/BASE64/FILE
+
+  Object(_utils__WEBPACK_IMPORTED_MODULE_2__["validateOutputType"])(_options.outputType);
+  _options.allowedFileTypes = _options.allowedFileTypes || _defaults__WEBPACK_IMPORTED_MODULE_0__["default"].allowedFileTypes; // An array of allowed file types
+
+  this.options = _options;
 }
 /*
 @params
-imageFile - The image file object obtained after user has uploaded the file
+image - File object / Blob
+Options - An object with following properties
+  maxWidth: the max width for the file in px
+  maxHeight: the max height for the file in px
+  quality: a value between 0 and 1 to denote the quality of the output image
+fileName - Name of the file if input is file (Optional)
 */
 ;
 

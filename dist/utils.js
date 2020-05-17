@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -100,9 +100,69 @@ return /******/ (function(modules) { // webpackBootstrap
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OUTPUT_TYPE", function() { return OUTPUT_TYPE; });
+var OUTPUT_TYPE = {
+  BLOB: "blob",
+  BASE64: "base64",
+  FILE: "file"
+};
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateAndGetBlob", function() { return validateAndGetBlob; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateFileType", function() { return validateFileType; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fileToBlob", function() { return fileToBlob; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateFileSize", function() { return validateFileSize; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "base64ToBlob", function() { return base64ToBlob; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "base64ToFile", function() { return base64ToFile; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "validateOutputType", function() { return validateOutputType; });
+/* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+var validateAndGetBlob = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(image, options) {
+    var imgBlob;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            imgBlob = image;
+
+            if (!(image instanceof File)) {
+              _context.next = 5;
+              break;
+            }
+
+            _context.next = 4;
+            return fileToBlob(image);
+
+          case 4:
+            imgBlob = _context.sent;
+
+          case 5:
+            validateFileSize(imgBlob.size, options);
+            validateFileType(imgBlob.type, options);
+            return _context.abrupt("return", imgBlob);
+
+          case 8:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee);
+  }));
+
+  return function validateAndGetBlob(_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
 var validateFileType = function validateFileType(fileType, options) {
   var accepted = false;
   options.allowedFileTypes.forEach(function (allowedFileType) {
@@ -111,9 +171,44 @@ var validateFileType = function validateFileType(fileType, options) {
   });
   return accepted;
 };
+var fileToBlob = /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(file) {
+    var getBlob;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            getBlob = function getBlob() {
+              return new Promise(function (resolve, _reject) {
+                var fileReader = new FileReader();
+
+                fileReader.onload = function (event) {
+                  resolve(new Blob([event.target.result], {
+                    type: file.type
+                  }));
+                };
+
+                fileReader.readAsArrayBuffer(file);
+              });
+            };
+
+            return _context2.abrupt("return", getBlob());
+
+          case 2:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  }));
+
+  return function fileToBlob(_x3) {
+    return _ref2.apply(this, arguments);
+  };
+}();
 var validateFileSize = function validateFileSize(imageSize, options) {
   if (imageSize > options.sizeLimit) {
-    throw "Please upload an image of size less than " + options.sizeLimit / (1024 * 1024) + "MB";
+    throw new Error("Please upload an image of size less than ".concat(options.sizeLimit / (1024 * 1024), "MB"));
   }
 };
 var base64ToBlob = function base64ToBlob(base64, fileType) {
@@ -140,6 +235,17 @@ var base64ToBlob = function base64ToBlob(base64, fileType) {
     type: fileType
   });
   return blob;
+};
+var base64ToFile = function base64ToFile(base64, fileType, fileName) {
+  var imgBlob = base64ToBlob(base64, fileType);
+  return new File([imgBlob], fileName, {
+    type: fileType
+  });
+};
+var validateOutputType = function validateOutputType(type) {
+  if (!Object.values(_constants__WEBPACK_IMPORTED_MODULE_0__["OUTPUT_TYPE"]).includes(type)) {
+    throw new Error("invalid output type ".concat(type));
+  }
 };
 
 /***/ })
