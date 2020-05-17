@@ -60,8 +60,8 @@ import transformImage from '@shellophobia/transform-image-js';
 function handleUpload(e){
   const file = e.target.files[0];
   // The library will add a property `transformImageJS` on window once you import it
-  const transformImage = new transformImageJS.TransformImage({maxHeight: 500, maxWidth:500, quality:0.9});
-  transformImage.resizeImage(file).then(res=>{
+  const transformImage = new transformImageJS.TransformImage({});
+  transformImage.resizeImage(file, {maxHeight: 500, maxWidth:500, quality:0.9}).then(res=>{
     //The response returns an object that has the output blob in output attribute and has metadata for image sizes before and after transformation
     console.log(res);
   }).catch(err => {
@@ -72,9 +72,9 @@ function handleUpload(e){
 // using async function
 async function handleUpload(e) {
   const file = e.target.files[0];
-  const transformImage = new transformImageJS.TransformImage({maxHeight: 500, maxWidth:500, quality:0.9});
+  const transformImage = new transformImageJS.TransformImage({});
   try {
-    const res = await transformImage.resizeImage(file);
+    const res = await transformImage.resizeImage(file, {maxHeight: 500, maxWidth:500, quality:0.9});
     console.log(res);
   } catch(e) {
     // handle error
@@ -90,9 +90,9 @@ import transformImage from "@shellophobia/transform-image-js";
 const handleUpload = async (e) => {
   const file = e.target.files[0];
   console.log(file);
-  const transformImage = new transformImage({maxHeight: 500, maxWidth:500, quality:0.9});
+  const transformImage = new transformImage({});
   try {
-    const res = await transformImage.resizeImage(file);
+    const res = await transformImage.resizeImage(file, {maxHeight: 500, maxWidth:500, quality:0.9});
     console.log(res);
   } catch (e) {
     console.log(e);
@@ -117,28 +117,33 @@ Following options can be passed during initialization of transformImage that ret
 
 #### `transformImage(options)`
 
-| Name             | Type     | Description                                                                                                | Default                |
-|------------------|----------|------------------------------------------------------------------------------------------------------------|------------------------|
-| sizeLimit        | int      | Byte size limit of the output                                                                              | 16777216 // 16MB       |
-| maxWidth         | int      | Max width of the output                                                                                    | 500                    |
-| maxHeight        | int      | Max height of the output                                                                                   | 500                    |
-| quality          | float    | A Number between 0 and 1 indicating the image quality to use for  image formats that use lossy compression | 0.92                   |
-| base64OutputType | bool     | Return base64 output string in response                                                                    | false                  |
-| blobOutputType   | bool     | Return blob output in response                                                                             | true                   |
-| allowedFileTypes | []string | Array of allowed file types for uploaded file                                                              | ["jpg", "png", "jpeg"] |
+| Name             | Type     | Description                                                          | Default                |
+|------------------|----------|----------------------------------------------------------------------|------------------------|
+| sizeLimit        | int      | the byte size limit for the input file/blob                          | 16*1024*1024 = 16MB    |
+| outputType       | enum     | defines the output object format. Allowed values :- blob/base64/file | blob                   |
+| allowedFileTypes | []string | allowed types for the input file/blob e.g. PNG, JPEG, JPG            | ["jpg", "png", "jpeg"] |
 
 
 ### Methods
 
-### `resizeImage(imageFile) => {Promise}`
+### `resizeImage(imageFile, options, fileName) => {Promise}`
 
 #### Description:
-Resize an image file with the configuration provided in the initialization options
+Resize an image file
 
 #### Parameters:
-| Name          | Type | Description              |
-|---------------|------|--------------------------|
-| imageFile     | file | The image file to resize |
+| Name     | Type      | Description                                                                                 | Required | Default |
+|----------|-----------|---------------------------------------------------------------------------------------------|----------|---------|
+| image    | File/Blob | File object / Blob to be resized                                                            | Yes      | N/A     |
+| options  | Object    | Additional options described below. The values can also override the TransformImage options | No       | {}      |
+| fileName | string    | Name of the file if outputType is file (Optional)                                           | No       | ""      |
+
+##### Options
+| Name      | Type  | Description                                                       | Default |
+|-----------|-------|-------------------------------------------------------------------|---------|
+| maxWidth  | int   | the max width for the file in px                                  | 500     |
+| maxHeight | int   | the max height for the file in px                                 | 500     |
+| quality   | float | a value between 0 and 1 to denote the quality of the output image | 0.9     |
 
 #### Returns:
 Promise that resolves to the output object

@@ -1,42 +1,41 @@
-import { validateFileType, validateFileSize, base64ToBlob } from "./utils";
+import { base64ToBlob, base64ToFile } from "./utils";
+import { OUTPUT_TYPE } from "./constants";
 
 // Returns a promise
-export const resizeImageFile = async (file, options, resolve, _reject) => {
-  // Perform a null check on file
-  if (!file) return;
+export const resizeImageFn = async (
+  imgBlob,
+  fileName,
+  options,
+  resolve,
+  _reject
+) => {
+  window.URL = window.URL || window.webkitURL;
+  const blobURL = window.URL.createObjectURL(imgBlob); // and get it's URL
 
-  // Validate the file type
-  if (!validateFileType(file.type, options)) {
-    throw "File " + file.name + " is not a supported image.";
-  }
-
-  // read the files
-  const reader = new FileReader();
-
-  reader.readAsArrayBuffer(file);
-
-  reader.onload = (event) => {
-    const blob = new Blob([event.target.result]); // create blob...
-    const imageSize = blob.size;
-
-    validateFileSize(imageSize, options);
-
-    window.URL = window.URL || window.webkitURL;
-    const blobURL = window.URL.createObjectURL(blob); // and get it's URL
-
-    // helper Image object
-    const image = new Image();
-    image.src = blobURL;
-    image.onload = function () {
-      // have to wait till it's loaded
-      const resizedImage = resizeImageCanvas(image, file.type, options); // send it to canvas
-      if (options.base64OutputType) {
+  // helper Image object
+  const image = new Image();
+  image.src = blobURL;
+  image.onload = function() {
+    // have to wait till it's loaded
+    window.URL.revokeObjectURL(blobURL);
+    const resizedImage = resizeImageCanvas(image, imgBlob.type, options); // send it to canvas
+    switch (options.outputType) {
+      case OUTPUT_TYPE.BASE64:
         resolve(resizedImage);
-      } else if (options.blobOutputType) {
-        resizedImage.output = base64ToBlob(resizedImage.output, file.type);
+        break;
+      case OUTPUT_TYPE.BLOB:
+        resizedImage.output = base64ToBlob(resizedImage.output, imgBlob.type);
         resolve(resizedImage);
-      }
-    };
+        break;
+      default:
+        resizedImage.output = base64ToFile(
+          resizedImage.output,
+          imgBlob.type,
+          fileName
+        );
+        resolve(resizedImage);
+        break;
+    }
   };
 };
 
@@ -70,7 +69,7 @@ export const resizeImageCanvas = (img, fileType, options) => {
       originalHeight: img.height,
       originalWidth: img.width,
       resizedHeight: height,
-      resizedWidth: width,
-    },
+      resizedWidth: width
+    }
   };
 };
